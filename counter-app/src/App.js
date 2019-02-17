@@ -24,6 +24,7 @@ class App extends Component {
             onIncrease={this.handleIncrease}
             onDelete={this.handleDeleteCounter}
             onReset={this.handleReset}
+            onDecrease={this.handleDecrese}
            />
         </main>
       </React.Fragment>
@@ -36,6 +37,13 @@ class App extends Component {
     foundCounter.value++;
     this.setState({ counters });
   };
+
+  handleDecrese = counterId => {
+    const counters = this._deepCopy(this.state.counters);
+    const foundCounter = counters.find(item => item.id === counterId);
+    foundCounter.value--;
+    this.setState({ counters });
+  }
 
   handleDeleteCounter = counterId => {
     const counters = this.state.counters.filter(
