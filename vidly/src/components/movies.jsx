@@ -46,7 +46,7 @@ class Movies extends Component {
                 <td>
                   <FaLike
                     isLiked={movie.isLiked}
-                    onLikeToggle={this.handleToggleLike.bind(this, movie._id)}
+                    onClick={() => this.handleToggleLike(movie)}
                   />
                 </td>
                 <td>
@@ -70,16 +70,13 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handleToggleLike = (movieId, isLiked) => {
-    const movies = this._deepCopy(this.state.movies);
-    const foundMovie = movies.find(movie => movie._id === movieId);
-    foundMovie.isLiked = isLiked;
-    this.setState({movies});
+  handleToggleLike = movie => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = {...movies[index]};
+    movies[index].isLiked = !movie.isLiked;
+    return this.setState({movies});
   };
-
-  _deepCopy(item) {
-    return JSON.parse(JSON.stringify(item));
-  }
 }
 
 export default Movies;
