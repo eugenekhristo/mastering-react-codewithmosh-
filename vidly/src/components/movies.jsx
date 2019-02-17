@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 // components
-import FaLike from './fa-like';
+import FaLike from './common/fa-like';
+import Pagination from './common/pagination';
+// utils
+import {paginateItems} from '../utils/paginateItems';
 
 class Movies extends Component {
   state = {
-    movies: getMovies()
+    movies: getMovies(),
+    // for pagination
+    itemsPerPage: 4,
+    activePage: 1
   };
 
+  ///////////////// RENDER
+  //////////////////////////////////////
   render() {
-    const { length: moviesLenght } = this.state.movies;
+    const { length: movieListLength } = this.state.movies;
+    const { movies, itemsPerPage, activePage } = this.state;
 
-    if (moviesLenght === 0) {
+    const paginatedMovies = paginateItems(movies, itemsPerPage, activePage);
+
+    ///////////////// RETURN
+    //////////////////////////////////////
+    if (movieListLength === 0) {
       return (
         <p className="mt-3">
           There are no movies left in the database{' '}
@@ -24,7 +37,7 @@ class Movies extends Component {
 
     return (
       <div>
-        <p className="mt-3">Showing {moviesLenght} movies in a database!</p>
+        <p className="mt-3">Showing {movieListLength} movies in a database!</p>
         <table className="table">
           <thead>
             <tr>
@@ -37,7 +50,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map(movie => (
+            {paginatedMovies.map(movie => (
               <tr key={movie._id}>
                 <td>{movie.title}</td>
                 <td>{movie.genre.name}</td>
@@ -52,7 +65,7 @@ class Movies extends Component {
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => this.onRemoveMovie(movie._id)}
+                    onClick={() => this.handleRemoveMovie(movie._id)}
                   >
                     Delete
                   </button>
@@ -61,11 +74,20 @@ class Movies extends Component {
             ))}
           </tbody>
         </table>
+
+        <Pagination 
+          itemsLength={movieListLength}
+          itemsPerPage={itemsPerPage}
+          activePage={activePage}
+          onPageChange={this.handlePageChange}
+        />
       </div>
     );
   }
 
-  onRemoveMovie = movieId => {
+  ///////////////// METHODS
+  //////////////////////////////////////
+  handleRemoveMovie = movieId => {
     const movies = this.state.movies.filter(movie => movie._id !== movieId);
     this.setState({ movies });
   };
@@ -77,6 +99,10 @@ class Movies extends Component {
     movies[index].isLiked = !movie.isLiked;
     return this.setState({movies});
   };
+
+  handlePageChange = activePage => {
+    this.setState({activePage});
+  }
 }
 
 export default Movies;
