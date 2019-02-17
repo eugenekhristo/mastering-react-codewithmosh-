@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // 3-rd party libraries
 import _ from 'lodash';
 
@@ -27,6 +28,15 @@ const Pagination = ({ itemsLength, itemsPerPage, activePage, onPageChange }) => 
       </ul>
     </nav>
   );
+};
+
+// kinda API what PROPS to pass into the component (and also checkes a type correctness)
+// - look at console!!!
+Pagination.propTypes = {
+  itemsLength: PropTypes.number.isRequired, 
+  itemsPerPage: PropTypes.number.isRequired, 
+  activePage: PropTypes.number.isRequired, 
+  onPageChange: PropTypes.func.isRequired
 };
 
 export default Pagination;
