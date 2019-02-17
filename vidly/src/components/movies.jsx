@@ -4,7 +4,7 @@ import { getMovies } from '../services/fakeMovieService';
 import FaLike from './common/fa-like';
 import Pagination from './common/pagination';
 // utils
-import {paginateItems} from '../utils/paginateItems';
+import { paginateItems } from '../utils/paginateItems';
 
 class Movies extends Component {
   state = {
@@ -20,7 +20,17 @@ class Movies extends Component {
     const { length: movieListLength } = this.state.movies;
     const { movies, itemsPerPage, activePage } = this.state;
 
-    const paginatedMovies = paginateItems(movies, itemsPerPage, activePage);
+    const actualActivePage = this.handlePaginationEdgeCase(
+      movieListLength,
+      itemsPerPage,
+      activePage
+    );
+
+    const paginatedMovies = paginateItems(
+      movies,
+      itemsPerPage,
+      actualActivePage
+    );
 
     ///////////////// RETURN
     //////////////////////////////////////
@@ -75,10 +85,10 @@ class Movies extends Component {
           </tbody>
         </table>
 
-        <Pagination 
+        <Pagination
           itemsLength={movieListLength}
           itemsPerPage={itemsPerPage}
-          activePage={activePage}
+          activePage={actualActivePage}
           onPageChange={this.handlePageChange}
         />
       </div>
@@ -95,13 +105,27 @@ class Movies extends Component {
   handleToggleLike = movie => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
-    movies[index] = {...movies[index]};
+    movies[index] = { ...movies[index] };
     movies[index].isLiked = !movie.isLiked;
-    return this.setState({movies});
+    return this.setState({ movies });
   };
 
   handlePageChange = activePage => {
-    this.setState({activePage});
+    this.setState({ activePage });
+  };
+
+  /**
+   * This function is supposed to be called whenever render() hook is truggered - and use its return value
+   * as actual value of activePage
+   * @param {number} movieListLength 
+   * @param {number} itemsPerPage 
+   * @param {number} activePage 
+   * @returns {number}
+   */
+  handlePaginationEdgeCase(movieListLength, itemsPerPage, activePage) {
+    const maxAllowedPage = Math.ceil(movieListLength / itemsPerPage);
+    if (activePage > maxAllowedPage) return activePage - 1;
+    return activePage;
   }
 }
 
