@@ -1,28 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-// 3-rd party libraries
-import _ from 'lodash';
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
-const Pagination = ({ itemsLength, itemsPerPage, activePage, onPageChange }) => {
-  const maxPageNumber = Math.ceil(itemsLength / itemsPerPage);
-  const pageNumbers = _.range(1, maxPageNumber + 1);
+const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
+  const pagesCount = Math.ceil(itemsCount / pageSize);
+  if (pagesCount === 1) return null;
+  const pages = _.range(1, pagesCount + 1);
 
   return (
-    <nav aria-label="Page navigation example">
+    <nav>
       <ul className="pagination">
-        {maxPageNumber > 1 && pageNumbers.map(pageNum => (
+        {pages.map(page => (
           <li
-            className={`page-item ${pageNum === activePage ? 'active' : ''}`}
-            key={pageNum}
+            key={page}
+            className={page === currentPage ? "page-item active" : "page-item"}
           >
-            <button
-              style={{ boxShadow: 'none' }}
-              className="page-link"
-              href="#"
-              onClick={() => onPageChange(pageNum)}
-            >
-              {pageNum}
-            </button>
+            <a className="page-link" onClick={() => onPageChange(page)}>
+              {page}
+            </a>
           </li>
         ))}
       </ul>
@@ -30,12 +25,10 @@ const Pagination = ({ itemsLength, itemsPerPage, activePage, onPageChange }) => 
   );
 };
 
-// kinda API what PROPS to pass into the component (and also checkes a type correctness)
-// - look at console!!!
 Pagination.propTypes = {
-  itemsLength: PropTypes.number.isRequired, 
-  itemsPerPage: PropTypes.number.isRequired, 
-  activePage: PropTypes.number.isRequired, 
+  itemsCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired
 };
 
