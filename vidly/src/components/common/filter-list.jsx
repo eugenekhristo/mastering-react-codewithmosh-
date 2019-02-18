@@ -3,25 +3,19 @@ import PropTypes from 'prop-types';
 
 ///////////////// HELPERS
 //////////////////////////////////////
-function getClassesForListGroupItems(actualId, activeFilterId) {
-  return `list-group-item ${actualId === activeFilterId ? 'active' : ''}`;
+function getClassesForListGroupItems(item, selectedItem) {
+  return `list-group-item ${item === selectedItem ? 'active' : ''}`;
 }
 
 ///////////////// COMPONENT
 //////////////////////////////////////
-const FilterList = ({ items, activeFilterId, textProperty, valueProperty, onChooseFilter }) => {
+const FilterList = ({ items, selectedItem, textProperty, valueProperty, onChooseFilter }) => {
   return (
     <ul className="list-group" style={{cursor: 'pointer'}}>
-      <li 
-        className={getClassesForListGroupItems(null, activeFilterId)}
-        onClick={() => onChooseFilter(null)}
-      >
-        All genres
-      </li>
       {items.map(item => (
         <li
-          className={getClassesForListGroupItems(item[valueProperty], activeFilterId)}
-          key={item[valueProperty]}
+          className={getClassesForListGroupItems(item, selectedItem)}
+          key={item[textProperty]}
           onClick={() => onChooseFilter(item)}
         >
           {item[textProperty]}
@@ -44,7 +38,7 @@ FilterList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   textProperty: PropTypes.string.isRequired,
   valueProperty: PropTypes.string.isRequired,
-  activeFilterId: PropTypes.any,
+  selectedItem: PropTypes.any,
   onChooseFilter: PropTypes.func.isRequired
 };
 

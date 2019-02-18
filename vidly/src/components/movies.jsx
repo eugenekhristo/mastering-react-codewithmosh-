@@ -19,18 +19,20 @@ class Movies extends Component {
     itemsPerPage: 4,
     activePage: 1,
     // for filtering
-    genres: []
+    genres: [],
+    selectedFilterItem: null
   };
 
   ///////////////// LIFECYCLE HOOKS
   //////////////////////////////////////
-  constructor() {
-    super();
-    this.state.activeFilterId = null;
-  }
-
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() });
+    const defaultGenreForList = { name: 'All genres' };
+    const genres = [defaultGenreForList, ...getGenres()];
+    this.setState({
+      movies: getMovies(),
+      genres,
+      selectedFilterItem: defaultGenreForList
+    });
   }
 
   ///////////////// METHODS
@@ -67,7 +69,7 @@ class Movies extends Component {
   }
 
   handleChooseFilter = genre => {
-    this.setState({ activeFilterId: genre ? genre._id : genre, activePage: 1 });
+    this.setState({ selectedFilterItem: genre, activePage: 1 });
   };
 
   ///////////////// RENDER
@@ -79,10 +81,10 @@ class Movies extends Component {
       itemsPerPage,
       activePage,
       genres,
-      activeFilterId
+      selectedFilterItem
     } = this.state;
     // filtering
-    const filteredMovies = filterMovies(movies, activeFilterId);
+    const filteredMovies = filterMovies(movies, selectedFilterItem);
 
     // for pagination
     const actualActivePage = this.handlePaginationEdgeCase(
@@ -115,7 +117,7 @@ class Movies extends Component {
         <div className="col-2">
           <FilterList
             items={genres}
-            activeFilterId={activeFilterId}
+            selectedItem={selectedFilterItem}
             onChooseFilter={this.handleChooseFilter}
           />
         </div>
