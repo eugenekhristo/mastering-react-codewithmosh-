@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import Movies from './components/movies';
-import Customers from './components/customers';
-import Rentals from './components/rentals';
-import MovieForm from './components/movie-form';
-import NotFound from './components/not-found';
-import {Switch, Redirect, Route} from 'react-router-dom';
-import './App.css';
-// components
-import Navbar from './components/common/navbar';
+import React, { Component } from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
+import Movies from "./components/movies";
+import MovieForm from "./components/movieForm";
+import Customers from "./components/customers";
+import Rentals from "./components/rentals";
+import NotFound from "./components/notFound";
+import NavBar from "./components/navBar";
+import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/registerForm";
+import "./App.css";
 
 class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar
-          logoLabel="Vidly"
-          linkLabels={['Movies', 'Customers', 'Rentals']}
-          links={['/movies', '/customers', '/rentals']}
-        />
+        <NavBar />
         <main className="container">
           <Switch>
+            <Route path="/register" component={RegisterForm} />
+            <Route path="/login" component={LoginForm} />
             <Route path="/movies/:id" component={MovieForm} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />

@@ -1,14 +1,7 @@
-import React, { Component } from 'react';
+import React from "react";
 
-class Customers extends Component {
-  state = {};
-  render() {
-    return (
-      <div>
-        <h1>Customers</h1>
-      </div>
-    );
-  }
-}
+const Customers = () => {
+  return <h1>Customers</h1>;
+};
 
 export default Customers;
