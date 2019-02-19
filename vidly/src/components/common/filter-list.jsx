@@ -1,14 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-///////////////// HELPERS
-//////////////////////////////////////
 function getClassesForListGroupItems(item, selectedItem) {
   return `list-group-item ${item === selectedItem ? 'active' : ''}`;
 }
 
-///////////////// COMPONENT
-//////////////////////////////////////
 const FilterList = ({ items, selectedItem, textProperty, valueProperty, onChooseFilter }) => {
   return (
     <ul className="list-group" style={{cursor: 'pointer'}}>
@@ -25,15 +21,11 @@ const FilterList = ({ items, selectedItem, textProperty, valueProperty, onChoose
   );
 };
 
-///////////////// DEFAULT TYPES
-//////////////////////////////////////
 FilterList.defaultProps = {
   textProperty: 'name',
   valueProperty: '_id',
 };
 
-///////////////// PROP TYPES
-//////////////////////////////////////
 FilterList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   textProperty: PropTypes.string.isRequired,

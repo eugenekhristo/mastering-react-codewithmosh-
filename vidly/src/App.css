@@ -26,3 +26,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.navbar button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none !important;
+}
